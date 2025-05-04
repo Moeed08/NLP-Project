@@ -1,0 +1,32 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Lint
+        run: |
+          flake8 app/ frontend/
+
+      - name: Run gRPC build
+        run: |
+          python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. app/service.proto
+
+      - name: (Optional) Run unit tests
+        run: |
+          pytest tests/

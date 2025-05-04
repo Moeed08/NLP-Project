@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service DiffusionService {
+  rpc GenerateImage(PromptRequest) returns (ImageReply);
+}
+
+message PromptRequest {
+  string prompt = 1;
+}
+
+message ImageReply {
+  string image_base64 = 1;
+}
