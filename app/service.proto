@@ -1,13 +1,43 @@
 syntax = "proto3";
 
-service DiffusionService {
-  rpc GenerateImage(PromptRequest) returns (ImageReply);
+package stable_diffusion;
+
+service StableDiffusionService {
+    rpc GenerateImage (GenerateRequest) returns (GenerateResponse);
+    rpc HealthCheck (HealthRequest) returns (HealthResponse);
 }
 
-message PromptRequest {
-  string prompt = 1;
+message GenerateRequest {
+    string prompt = 1;
+    optional int32 height = 2;  // Default to model's default if not specified
+    optional int32 width = 3;   // Default to model's default if not specified
+    optional int32 num_inference_steps = 50; // Default to model's default if not specified
+    optional float guidance_scale = 5;      // Default to model's default if not specified
+    optional int32 seed = 6;               // Random if not specified
 }
 
-message ImageReply {
-  string image_base64 = 1;
+message GenerateResponse {
+    oneof result {
+        Success success = 1;
+        Error error = 2;
+    }
+}
+
+message Success {
+    bytes image_data = 1;  // PNG or JPEG binary data
+    string mime_type = 2;  // e.g., "image/png"
+    int64 seed = 3;        // The seed used for generation
+}
+
+message Error {
+    string message = 1;
+    int32 code = 2;        // HTTP-style error code
+}
+
+message HealthRequest {
+    // Can add health check parameters if needed
+}
+
+message HealthResponse {
+    string status = 1;
 }

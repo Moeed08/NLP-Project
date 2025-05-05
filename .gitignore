@@ -1,5 +1,6 @@
-venv/
+.venv/
 __pycache__/
 
 app/service_pb2.py
 app/service_pb2_grpc.py
+
