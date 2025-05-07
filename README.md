@@ -128,4 +128,4 @@ You can build and run the application using Docker.
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
-t
+check
